@@ -1,18 +1,36 @@
 package org.senai;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Turma {
     private int id;
     private String nome;
-    private List<Aluno> alunos;
+    private ArrayList<Aluno> listaAlunos;
     private Professor professor;
 
     public Turma(int id, String nome) {
         this.id = id;
         this.nome = nome;
-        this.alunos = new ArrayList<>();
+        this.listaAlunos = new ArrayList<>();
+    }
+
+    // Métodos
+    public void adicionarAluno(Aluno a) {
+        listaAlunos.add(a);
+    }
+
+    public void adicionarProfessor(Professor p) {
+        this.professor = p;
+    }
+
+    public void visualizarTurma() {
+        System.out.println("Turma: " + nome);
+        System.out.println("Professor: " + (professor != null ? professor.toString() : "Nenhum professor cadastrado"));
+        System.out.println("Alunos:");
+        for (Aluno a : listaAlunos) {
+            System.out.println(" - " + a.toString());
+        }
     }
 
     // Getters e Setters
@@ -32,8 +50,8 @@ public class Turma {
         this.nome = nome;
     }
 
-    public List<Aluno> getAlunos() {
-        return alunos;
+    public ArrayList<Aluno> getListaAlunos() {
+        return listaAlunos;
     }
 
     public Professor getProfessor() {
@@ -42,23 +60,5 @@ public class Turma {
 
     public void setProfessor(Professor professor) {
         this.professor = professor;
-    }
-
-    // Métodos
-    public void adicionarAluno(Aluno aluno) {
-        alunos.add(aluno);
-    }
-
-    public void adicionarProfessor(Professor professor) {
-        this.professor = professor;
-    }
-
-    public void visualizarTurma() {
-        System.out.println("Turma: " + nome);
-        System.out.println("Professor: " + (professor != null ? professor.getNome() : "Nenhum"));
-        System.out.println("Alunos:");
-        for (Aluno aluno : alunos) {
-            System.out.println(" - " + aluno.getNome());
-        }
     }
 }

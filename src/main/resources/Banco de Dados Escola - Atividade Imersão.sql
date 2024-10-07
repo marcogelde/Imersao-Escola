@@ -1,5 +1,7 @@
-CREATE DATABASE escola;
-USE escola;
+CREATE
+DATABASE escola;
+USE
+escola;
 
 CREATE TABLE Pessoa
 (
@@ -10,14 +12,14 @@ CREATE TABLE Pessoa
 
 CREATE TABLE Professor
 (
-    id INT PRIMARY KEY auto_increment,
+    id INT PRIMARY KEY,
     salario DOUBLE NOT NULL,
     FOREIGN KEY (id) REFERENCES Pessoa (id)
 );
 
 CREATE TABLE Aluno
 (
-    id INT PRIMARY KEY auto_increment,
+    id INT PRIMARY KEY,
     nota DOUBLE NOT NULL,
     FOREIGN KEY (id) REFERENCES Pessoa (id)
 );

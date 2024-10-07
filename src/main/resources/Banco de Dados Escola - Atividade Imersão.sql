@@ -1,7 +1,5 @@
-CREATE
-DATABASE escola;
-USE
-escola;
+CREATE DATABASE escola;
+USE escola;
 
 CREATE TABLE Pessoa
 (

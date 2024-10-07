@@ -124,8 +124,86 @@ public class EscolaDAO {
     }
 
     // Update
+    public void atualizarProfessor(Pessoa pessoa, Professor professor) {
+            String sqlPessoa = "UPDATE Pessoa SET nome = ?, idade = ? WHERE id = ?";
+            String sqlProfessor = "UPDATE Professor SET salario = ? WHERE id = ?";
+
+            try (Connection conn = Conexao.getConnection();
+                PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa);
+                PreparedStatement stmtProfessor = conn.prepareStatement(sqlProfessor)){
+
+                stmtPessoa.setString(1,pessoa.getNome());
+                stmtPessoa.setInt(2,pessoa.getIdade());
+                stmtPessoa.setInt(3,professor.getId());
+                stmtPessoa.executeUpdate();
+
+                stmtProfessor.setDouble(1, professor.getSalario());
+                stmtProfessor.setInt(2,professor.getId());
+                stmtProfessor.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException("Erro ao atualizar professor.", e);
+            }
+    }
+
+    public void atualizarAluno(Pessoa pessoa, Aluno aluno) {
+        String sqlPessoa = "UPDATE Pessoa SET nome = ?, idade = ? WHERE id = ?";
+        String sqlAluno = "UPDATE Aluno SET nota = ? WHERE id = ?";
+
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa);
+             PreparedStatement stmtAluno = conn.prepareStatement(sqlAluno)){
+
+            stmtPessoa.setString(1,pessoa.getNome());
+            stmtPessoa.setInt(2,pessoa.getIdade());
+            stmtPessoa.setInt(3,aluno.getId());
+            stmtPessoa.executeUpdate();
+
+            stmtAluno.setDouble(1, aluno.getNota());
+            stmtAluno.setInt(2,aluno.getId());
+            stmtAluno.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar aluno.", e);
+        }
+    }
 
     // Delete
+    public void deletarProfessor(int id) {
+        String sqlProfessor = "DELETE FROM Professor WHERE id = ?";
+        String sqlPessoa = "DELETE FROM Pessoa WHERE id = ?";
 
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmtProfessor = conn.prepareStatement(sqlProfessor);
+             PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa)) {
 
+            stmtProfessor.setInt(1, id);
+            stmtProfessor.executeUpdate();
+
+            stmtPessoa.setInt(1, id);
+            stmtPessoa.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao deletar professor.", e);
+        }
+    }
+
+    public void deletarAluno(int id) {
+        String sqlAluno = "DELETE FROM Aluno WHERE id = ?";
+        String sqlPessoa = "DELETE FROM Pessoa WHERE id = ?";
+
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmtAluno = conn.prepareStatement(sqlAluno);
+             PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa)) {
+
+            stmtAluno.setInt(1, id);
+            stmtAluno.executeUpdate();
+
+            stmtPessoa.setInt(1, id);
+            stmtPessoa.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao deletar aluno.", e);
+        }
+    }
 }

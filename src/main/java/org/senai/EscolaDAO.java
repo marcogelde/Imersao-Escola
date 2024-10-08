@@ -213,9 +213,11 @@ public class EscolaDAO {
              PreparedStatement stmtProfessor = conn.prepareStatement(sqlProfessor);
              PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa)) {
 
+            // Deleta o professor
             stmtProfessor.setInt(1, id);
             stmtProfessor.executeUpdate();
 
+            // Deleta a pessoa associada ao professor
             stmtPessoa.setInt(1, id);
             stmtPessoa.executeUpdate();
 
@@ -223,6 +225,7 @@ public class EscolaDAO {
             throw new RuntimeException("Erro ao deletar professor.", e);
         }
     }
+
 
     public void deletarAluno(int id) {
         String sqlAluno = "DELETE FROM Aluno WHERE id = ?";
@@ -247,11 +250,12 @@ public class EscolaDAO {
         String sqlTurmaAluno = "DELETE FROM Turma_Aluno WHERE id_turma = ?";
         String sqlTurma = "DELETE FROM Turma WHERE id = ?";
 
+
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmtTurmaAluno = conn.prepareStatement(sqlTurmaAluno);
              PreparedStatement stmtTurma = conn.prepareStatement(sqlTurma)) {
 
-            // Deleta o relacionamento da turma com os alunos (se houver)
+            // Deleta o relacionamento da turma com os alunos
             stmtTurmaAluno.setInt(1, id);
             stmtTurmaAluno.executeUpdate();
 

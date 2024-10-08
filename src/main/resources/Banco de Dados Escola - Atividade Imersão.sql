@@ -12,7 +12,7 @@ CREATE TABLE Professor
 (
     id INT PRIMARY KEY,
     salario DOUBLE NOT NULL,
-    FOREIGN KEY (id) REFERENCES Pessoa (id)
+    FOREIGN KEY (id) REFERENCES Pessoa (id) ON DELETE CASCADE
 );
 
 CREATE TABLE Aluno
@@ -27,14 +27,14 @@ CREATE TABLE Turma
     id           INT PRIMARY KEY auto_increment,
     nome         VARCHAR(100) NOT NULL,
     professor_id INT,
-    FOREIGN KEY (professor_id) REFERENCES Professor (id)
+    FOREIGN KEY (professor_id) REFERENCES Professor (id) ON DELETE CASCADE
 );
 
 CREATE TABLE Turma_Aluno
 (
-    turma_id INT,
-    aluno_id INT,
-    PRIMARY KEY (turma_id, aluno_id),
-    FOREIGN KEY (turma_id) REFERENCES Turma (id),
-    FOREIGN KEY (aluno_id) REFERENCES Aluno (id)
+    id_turma INT,
+    id_aluno INT,
+    PRIMARY KEY (id_turma, id_aluno),
+    FOREIGN KEY (id_turma) REFERENCES Turma (id),
+    FOREIGN KEY (id_aluno) REFERENCES Aluno (id)
 );

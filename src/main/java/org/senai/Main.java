@@ -41,7 +41,6 @@ public static void main(String[] args) throws SQLException {
         System.out.println("ID: "+p.getId() + " - Professor " + p.getNome() + ", " + p.getIdade() + " anos e salário: R$" + p.getSalario());
     }
 
-
     Aluno a4 = new Aluno(3,"Rafa", 18, 7);
     dao.atualizarAluno(a4, a4);
 
@@ -49,8 +48,17 @@ public static void main(String[] args) throws SQLException {
         System.out.println("ID: "+a.getId() + " - Aluno " + a.getNome() + ", " + a.getIdade() + " anos e nota: " + a.getNota());
     }
 
-
-
     // Delete
+    dao.deletarProfessor(4);
+    System.out.println("Professor deletado com sucesso!");
+
+    dao.deletarAluno(1);
+    dao.deletarAluno(2);
+    dao.deletarAluno(3);
+    System.out.println("Alunos deletados com sucesso!");
+
+    dao.deletarTurma(1);
+    System.out.println("Turma deletada com sucesso!");
+
 }
 

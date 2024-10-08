@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public static void main(String[] args) throws SQLException {
     EscolaDAO dao = new EscolaDAO();
 
-    // Criando instâncias
+    // Create
     Aluno a1 = new Aluno(1,"João", 20, 8.5);
     dao.adicionarAluno(a1, a1);
 
@@ -24,13 +24,33 @@ public static void main(String[] args) throws SQLException {
     Turma t1 = new Turma(1, "Programação");
     dao.adicionarTurma(t1, p1);
 
+    // Read
+    for(Aluno a : dao.listarAluno()){
+        System.out.println("ID: "+a.getId() + " - Aluno " + a.getNome() + ", " + a.getIdade() + " anos e nota: " + a.getNota());
+    }
 
-    t1.adicionarProfessor(p1);
-    t1.adicionarAluno(a1);
-    t1.adicionarAluno(a2);
-    t1.adicionarAluno(a3);
+    for(Professor p : dao.listarProfessor()){
+        System.out.println("ID: "+p.getId() + " - Professor " + p.getNome() + ", " + p.getIdade() + " anos e salário: R$" + p.getSalario());
+    }
 
-    t1.visualizarTurma();
+    // Update
+    Professor p2 = new Professor(4,"João", 30, 6000);
+    dao.atualizarProfessor(p2, p2);
 
-    //dao.listarAluno(a1);
+    for(Professor p : dao.listarProfessor()){
+        System.out.println("ID: "+p.getId() + " - Professor " + p.getNome() + ", " + p.getIdade() + " anos e salário: R$" + p.getSalario());
+    }
+
+
+    Aluno a4 = new Aluno(3,"Rafa", 18, 7);
+    dao.atualizarAluno(a4, a4);
+
+    for(Aluno a : dao.listarAluno()){
+        System.out.println("ID: "+a.getId() + " - Aluno " + a.getNome() + ", " + a.getIdade() + " anos e nota: " + a.getNota());
+    }
+
+
+
+    // Delete
 }
+

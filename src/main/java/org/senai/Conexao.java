@@ -17,6 +17,4 @@ public class Conexao {
             throw new RuntimeException("Erro ao conectar ao Banco de Dados.", e);
         }
     }
-
-
 }

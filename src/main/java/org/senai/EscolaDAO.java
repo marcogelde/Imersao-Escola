@@ -11,18 +11,21 @@ public class EscolaDAO {
 
     // Create
     public void adicionarProfessor(Pessoa pessoa, Professor professor) {
-        String sqlPessoa = "INSERT INTO Pessoa (nome, idade) VALUES (?, ?)";
+        String sqlPessoa = "INSERT INTO Pessoa (id, nome, idade) VALUES (?, ?, ?)";
         String sqlProfessor = "INSERT INTO Professor (id, salario) VALUES (?, ?)";
 
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa);
              PreparedStatement stmtProfessor = conn.prepareStatement(sqlProfessor)) {
 
-            stmtPessoa.setString(1, pessoa.getNome());
-            stmtPessoa.setInt(2, pessoa.getIdade());
+            // Inserir na tabela Pessoa
+            stmtPessoa.setInt(1, professor.getId());
+            stmtPessoa.setString(2, professor.getNome());
+            stmtPessoa.setInt(3, professor.getIdade());
             stmtPessoa.executeUpdate();
 
-            stmtProfessor.setInt(1, pessoa.getId());
+            // Inserir na tabela Professor
+            stmtProfessor.setInt(1, professor.getId());
             stmtProfessor.setDouble(2, professor.getSalario());
             stmtProfessor.executeUpdate();
 
@@ -52,7 +55,6 @@ public class EscolaDAO {
             throw new RuntimeException("Erro ao adicionar aluno.", e);
         }
     }
-
     public void adicionarTurma(Turma turma, Professor professor) {
         String sqlTurma = "INSERT INTO Turma (nome, professor_id) VALUES (?, ?)";
 
@@ -71,7 +73,7 @@ public class EscolaDAO {
     }
 
     // Read
-    public List<Professor> listarProfessor(Professor p1) throws SQLException {
+    public List<Professor> listarProfessor() {
         String sqlProf = "SELECT p.id, p.nome, p.idade, prof.salario " +
                          "FROM Pessoa p " +
                          "JOIN Professor prof ON p.id = prof.id";
@@ -96,8 +98,7 @@ public class EscolaDAO {
         }
         return professores;
     }
-
-    public List<Aluno> listarAluno(Aluno a1) throws SQLException {
+    public List<Aluno> listarAluno() {
         String sqlAluno = "SELECT p.id, p.nome, p.idade, aluno.nota " +
                           "FROM Pessoa p " +
                           "JOIN Aluno ON p.id = Aluno.id";
@@ -122,6 +123,41 @@ public class EscolaDAO {
         }
         return alunos;
     }
+
+    public List<Turma> listarTurma() {
+        String sqlTurma = "SELECT t.id, t.nome AS nome_turma, p.id AS professor_id, p.nome AS professor_nome, p.idade AS professor_idade, prof.salario " +
+                "FROM Turma t " +
+                "JOIN Professor prof ON t.professor_id = prof.id " +
+                "JOIN Pessoa p ON prof.id = p.id";
+
+        List<Turma> turmas = new ArrayList<>();
+
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sqlTurma);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int turmaId = rs.getInt("id");
+                String nomeTurma = rs.getString("nome_turma");
+
+                // Dados do professor
+                int professorId = rs.getInt("professor_id");
+                String professorNome = rs.getString("professor_nome");
+                int professorIdade = rs.getInt("professor_idade");
+                double salarioProfessor = rs.getDouble("salario");
+
+                Professor professor = new Professor(professorId, professorNome, professorIdade, salarioProfessor);
+                Turma turma = new Turma(turmaId, nomeTurma);
+                turma.setProfessor(professor);
+
+                turmas.add(turma);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar turmas.", e);
+        }
+        return turmas;
+    }
+
 
     // Update
     public void atualizarProfessor(Pessoa pessoa, Professor professor) {
@@ -206,4 +242,26 @@ public class EscolaDAO {
             throw new RuntimeException("Erro ao deletar aluno.", e);
         }
     }
+
+    public void deletarTurma(int id) {
+        String sqlTurmaAluno = "DELETE FROM Turma_Aluno WHERE id_turma = ?";
+        String sqlTurma = "DELETE FROM Turma WHERE id = ?";
+
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmtTurmaAluno = conn.prepareStatement(sqlTurmaAluno);
+             PreparedStatement stmtTurma = conn.prepareStatement(sqlTurma)) {
+
+            // Deleta o relacionamento da turma com os alunos (se houver)
+            stmtTurmaAluno.setInt(1, id);
+            stmtTurmaAluno.executeUpdate();
+
+            // Deleta a turma
+            stmtTurma.setInt(1, id);
+            stmtTurma.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao deletar turma.", e);
+        }
+    }
+
 }

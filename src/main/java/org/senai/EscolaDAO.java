@@ -7,9 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EscolaDAO {
+public class EscolaDAO implements IEscolaDAO {
 
     // Create
+    @Override
     public void adicionarProfessor(Pessoa pessoa, Professor professor) {
         String sqlPessoa = "INSERT INTO Pessoa (id, nome, idade) VALUES (?, ?, ?)";
         String sqlProfessor = "INSERT INTO Professor (id, salario) VALUES (?, ?)";
@@ -33,7 +34,7 @@ public class EscolaDAO {
             throw new RuntimeException("Erro ao adicionar professor.", e);
         }
     }
-
+    @Override
     public void adicionarAluno(Pessoa pessoa, Aluno aluno) {
         String sqlPessoa = "INSERT INTO Pessoa (nome, idade) VALUES (?, ?)";
         String sqlAluno = "INSERT INTO Aluno (id, nota) VALUES (?, ?)";
@@ -55,6 +56,7 @@ public class EscolaDAO {
             throw new RuntimeException("Erro ao adicionar aluno.", e);
         }
     }
+    @Override
     public void adicionarTurma(Turma turma, Professor professor) {
         String sqlTurma = "INSERT INTO Turma (nome, professor_id) VALUES (?, ?)";
 
@@ -73,6 +75,7 @@ public class EscolaDAO {
     }
 
     // Read
+    @Override
     public List<Professor> listarProfessor() {
         String sqlProf = "SELECT p.id, p.nome, p.idade, prof.salario " +
                          "FROM Pessoa p " +
@@ -98,6 +101,7 @@ public class EscolaDAO {
         }
         return professores;
     }
+    @Override
     public List<Aluno> listarAluno() {
         String sqlAluno = "SELECT p.id, p.nome, p.idade, aluno.nota " +
                           "FROM Pessoa p " +
@@ -123,7 +127,7 @@ public class EscolaDAO {
         }
         return alunos;
     }
-
+    @Override
     public List<Turma> listarTurma() {
         String sqlTurma = "SELECT t.id, t.nome AS nome_turma, p.id AS professor_id, p.nome AS professor_nome, p.idade AS professor_idade, prof.salario " +
                 "FROM Turma t " +
@@ -158,8 +162,8 @@ public class EscolaDAO {
         return turmas;
     }
 
-
     // Update
+    @Override
     public void atualizarProfessor(Pessoa pessoa, Professor professor) {
             String sqlPessoa = "UPDATE Pessoa SET nome = ?, idade = ? WHERE id = ?";
             String sqlProfessor = "UPDATE Professor SET salario = ? WHERE id = ?";
@@ -181,7 +185,7 @@ public class EscolaDAO {
                 throw new RuntimeException("Erro ao atualizar professor.", e);
             }
     }
-
+    @Override
     public void atualizarAluno(Pessoa pessoa, Aluno aluno) {
         String sqlPessoa = "UPDATE Pessoa SET nome = ?, idade = ? WHERE id = ?";
         String sqlAluno = "UPDATE Aluno SET nota = ? WHERE id = ?";
@@ -205,6 +209,7 @@ public class EscolaDAO {
     }
 
     // Delete
+    @Override
     public void deletarProfessor(int id) {
         String sqlProfessor = "DELETE FROM Professor WHERE id = ?";
         String sqlPessoa = "DELETE FROM Pessoa WHERE id = ?";
@@ -225,8 +230,7 @@ public class EscolaDAO {
             throw new RuntimeException("Erro ao deletar professor.", e);
         }
     }
-
-
+    @Override
     public void deletarAluno(int id) {
         String sqlAluno = "DELETE FROM Aluno WHERE id = ?";
         String sqlPessoa = "DELETE FROM Pessoa WHERE id = ?";
@@ -245,7 +249,7 @@ public class EscolaDAO {
             throw new RuntimeException("Erro ao deletar aluno.", e);
         }
     }
-
+    @Override
     public void deletarTurma(int id) {
         String sqlTurmaAluno = "DELETE FROM Turma_Aluno WHERE id_turma = ?";
         String sqlTurma = "DELETE FROM Turma WHERE id = ?";
